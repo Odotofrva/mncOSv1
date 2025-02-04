@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMV2nF3bq9VfQ1bm2Y4eB6uY4u7G5b0cK5Kx5b" crossorigin="anonymous">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Align items to the bottom */
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0; /* Remove default margin */
+            position: relative; /* For absolute positioning */
+        }
+        .mph-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .map-window {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 300px;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid #007BFF;
+            border-radius: 8px;
+            display: none; /* Initially hidden */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .map {
+            width: 100%;
+            height: 100%;
+            background-color: #e0e0e0; /* Placeholder for the map */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #333;
+        }
+        .toggle-map {
+            position: absolute;
+            bottom: 230px; /* Above the map window */
+            left: 20px;
+            width: 50px; /* Fixed width and height for round shape */
+            height: 50px;
+            background-color: #013001; /* Button color */
+            color: white; /* Icon color */
+            border: none;
+            border-radius: 50%; /* Make it round */
+            cursor: pointer;
+            font-size: 24px; /* Icon size */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the icon */
+        }
+        .toggle-map:hover {
+            background-color: #01ff62; /* Darker color on hover */
+        }
+        .joystick {
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(51, 51, 51, 0.5);
+            border-radius: 50%;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .stick {
+            width: 50px;
+            height: 50px;
+            background-image: url('images/joystick.png'); /* Path to your PNG */
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+        .home-button {
+            background-color: lightcoral;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            color: white; /* Icon color */
+            border: none;
+            border-radius: 50%; /* Make it round */
+            cursor: pointer;
+            font-size: 24px; /* Icon size */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the icon */
+        }
+        .home-button:hover {
+            background-color: red; /* Darker color on hover */
+        }
+
+        .bottom-right-image {
+            position: absolute;
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            width: 50px; /* Set width */
+            height: auto; /* Maintain aspect ratio */
+            opacity: 0.4; /* Make it slightly transparent */
+        }
+    </style>
+</head>
+<body>
+    <div class="mph-display" id="mphDisplay">0 SPH</div>
+    <button class="home-button" onclick="window.location.href='index.html';">
+        <i class="fas fa-microchip"></i>
+    </button>
+    <button class="toggle-map" onclick="toggleMap()">
+        <i class="fas fa-globe"></i>
+    </button>
+    <div class="joystick">
+        <div class="stick" id="stick"></div>
+    </div>
+    <div class="map-window" id="mapWindow">
+        <div class="map">MNC-BOT LOCATION</div>
+    </div>
+    <img src="mnc2.png" alt="Transparent Image" class="bottom-right-image">
+    <script>
+        function toggleMap() {
+            const mapWindow = document.getElementById('mapWindow');
+            if (mapWindow.style.display === 'none' || mapWindow.style.display === '') {
+                mapWindow.style.display = 'block'; // Show the map
+            } else {
+                mapWindow.style.display = 'none'; // Hide the map
+            }
+        }
+    </script>
+</body>
+</html>
