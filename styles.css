@@ -1,0 +1,16 @@
+/* Center the logo and adjust spacing */
+.navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Add padding to the navbar links */
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+}
+
+/* Ensure the navbar doesn't overlap the content */
+body {
+    padding-top: 56px; /* Adjust based on your navbar height */
+}

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONNECT - MENOCLONE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet"> <!-- Orbitron Font -->
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000000; /* Background color */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .video-player {
+            width: 80%; /* Set width as needed */
+            max-width: 900px; /* Max width for larger screens */
+            background-color: #000; /* Background color for the player */
+            border-radius: 8px; /* Rounded corners */
+            overflow: hidden; /* Hide overflow */
+        }
+        video {
+            width: 100%; /* Make video responsive */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .menu {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            z-index: 1;
+        }
+        .menu-button {
+            background: transparent;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 253, 253, 0.836);
+            position: relative;
+        }
+        .menu-options {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: rgba(255, 255, 255, 0);
+            border-radius: 8px;
+
+            box-shadow: 0 4px 10px rgba(255, 253, 253, 0.836);
+            
+        }
+        .menu-options button {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .menu-options button:hover {
+            background: #61616134;
+        }
+        .icon {
+            margin-right: 10px;
+        }
+        .footer {
+            background-color: transparent; /* Footer background color */
+            color: white; /* Footer text color */
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="video-player">
+        <video controls>
+            <source src="your-video-file.mp4" type="video/mp4">
+            Your browser does not support the video element.
+        </video>
+    </div>
+
+
+    <div class="menu">
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+        <div class="menu-options" id="menuOptions">
+            <a href="index.html">
+                <button>
+                    <span class="icon"><i class="fas fa-tv"></i></span> Home
+                </button>
+            </a>
+            <a href="#">
+                <button>
+                    <span class="icon"><i class="fas fa-shopping-cart"></i></span> Products
+                </button>
+            </a>
+            <a href="https://odotofrva.github.io/mncv2/">
+                <button>
+                    <span class="icon"><i class="fas fa-microchip"></i></span> MNCPv2
+                </button>
+            </a>
+            <a href="#">
+                <button>
+                    <span class="icon"><i class="fas fa-book"></i></span> Docs
+                </button>
+            </a>
+            <a href="mnctv.html">
+                <button>
+                    <span class="icon"><i class="fas fa-envelope"></i></span> Connect
+                </button>
+            </a>
+        </div>
+    </div>
+    
+
+
+
+    <div class="footer">
+        &copy; 2025 MENOCLONE. All Rights Reserved.
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Particle system setup
+        const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.03, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const geometry = new THREE.BufferGeometry();
+            const count = 10000; // Number of particles
+            const positions = new Float32Array(count * 3); // x, y, z for each particle
+
+            for (let i = 0; i < count; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 20; // X position
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 20; // Y position
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // Z position
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.02 });
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                particles.rotation.x += 0.000;
+                particles.rotation.y += 0.003;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Interactive particle movement
+        function onMouseMove(event) {
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            camera.position.x = mouseX * 5; // Adjust the multiplier for sensitivity
+            camera.position.y = mouseY * 5; // Adjust the multiplier for sensitivity
+            camera.lookAt(scene.position);
+        }
+
+        function onTouchMove(event) {
+            const touchX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+            const touchY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+            camera.position.x = touchX * 5; // Adjust the multiplier for sensitivity
+            camera.position.y = touchY * 5; // Adjust the multiplier for sensitivity
+            camera.lookAt(scene.position);
+        }
+
+
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('touchmove', onTouchMove);
+
+        // Menu Functions
+        function toggleMenu() {
+            const menuOptions = document.getElementById('menuOptions');
+            menuOptions.style.display = menuOptions.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function launch(option) {
+            alert('Launching ' + option);
+            // Here you can add the logic to redirect to the respective pages
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+
+
+</body>
+</html>
